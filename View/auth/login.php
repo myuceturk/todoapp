@@ -1,7 +1,6 @@
 <?php view('static/header') ?>
-
 <div class="login-page">
-    <div class="login-box">
+    <div class="login-box" style="width: 440px;">
         <!-- /.login-logo -->
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
@@ -9,11 +8,12 @@
             </div>
             <div class="card-body">
                 <p class="login-box-msg"><?= lang('Oturum Açın') ?></p>
-                <p class="login-box-msg"><?= get_session('hata') ?></p>
-
+                <?php echo  get_session('error') ?
+                    '<div class="alert alert-' . $_SESSION['error']['type'] . '">' . $_SESSION['error']['message'] . '</div>'
+                    : null ?>
                 <form action="<?= URL . 'login' ?>" method="post">
                     <div class="input-group mb-3">
-                        <input type="email" class="form-control" name="email" placeholder="<?= lang('E-Posta') ?>">
+                        <input type="email" class="form-control" value="<?= $_SESSION['post']['email'] ?? '' ?>" name="email" placeholder="<?= lang('E-Posta') ?>">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
@@ -21,7 +21,7 @@
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" name="password" placeholder="<?= lang('Şifre') ?>">
+                        <input type="password" class="form-control" name="password" value="<?= $_SESSION['post']['password'] ?? '' ?>" placeholder="<?= lang('Şifre') ?>">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
