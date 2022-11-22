@@ -26,6 +26,9 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
+                        <?php echo  get('message') ?
+                            '<div class="alert alert-' . get('type') . '">' . get('message') . '</div>'
+                            : null ?>
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Kategori Listesi</h3>
@@ -46,9 +49,10 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach ($data as $key => $value) : ?>
+                                        <?php $count = 1;
+                                        foreach ($data as $key => $value) : ?>
                                             <tr>
-                                                <td>1.</td>
+                                                <td><?= $count++ ?></td>
                                                 <td><?= $value['title'] ?></td>
                                                 <td><?= $value['created_date'] ?></td>
                                                 <td><?= $value['updated_date'] ?></td>
