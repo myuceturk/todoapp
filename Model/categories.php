@@ -58,9 +58,16 @@ if ($process == 'add') { // KATEGORİ EKLEME
         ];
     }
 } elseif ($process == 'edit') { // KATEGORİ GÜNCELLEME
+    if (!$data['title']) {
+        return [
+            'success' => false,
+            'type' => 'danger',
+            'message' => 'Lütfen kategoriniz için bir başlık giriniz.'
+        ];
+    }
     $query = $db->prepare("UPDATE categories SET categories.title=? WHERE categories.id=? && user_id=?");
     $get = $query->execute([$data['title'], $data['id'], get_session('id')]);
-    if ($query->rowCount()) {
+    if ($get) {
         return [
             'success' => true,
             'type' => 'success',
@@ -68,7 +75,7 @@ if ($process == 'add') { // KATEGORİ EKLEME
         ];
     } else {
         return [
-            'success' => true,
+            'success' => false,
             'type' => 'danger',
             'message' => 'Kategori güncelleme işleminde bir hata meydana geldi!'
         ];
