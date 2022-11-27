@@ -70,3 +70,8 @@ function url($url)
     global $config;
     return URL . $config['lang'] . '/' . $url;
 }
+function default_lang()
+{
+    global $config;
+    return $config['lang'];
+}

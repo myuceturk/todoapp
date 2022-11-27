@@ -19,101 +19,75 @@
     <?php view('static/sidebar') ?>
 
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper p-5">
+    <div class="content-wrapper">
 
         <!-- Main content -->
         <div class="content">
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <h3>Yapılacaklar</h3>
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
+                <section class="content-header">
+                    <h5 class="mt-4 mb-2">Güncel Durumunuz <code><?= date('d.M.Y'); ?></code></h5>
+                </section>
 
-                                <p class="card-text">
-                                    Some quick example text to build on the card title and make up the bulk of the card's
-                                    content.
-                                </p>
+                <section class="content">
+                    <div class="row">
+                        <?php foreach ($data['statistics'] as $row) : ?>
+                            <div class="col-md-4 col-sm-6 col-12">
+                                <div class="info-box bg-<?= status($row['status'])['color'] ?>">
+                                    <span class="info-box-icon"><i class="fa fa-<?= status($row['status'])['icon'] ?>"></i></span>
 
-                                <a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text"><?= status($row['status'])['title'] ?></span>
+                                        <span class="info-box-number"><?= $row['toplam'] ?></span>
+
+                                        <div class="progress">
+                                            <div class="progress-bar" style="width: <?= number_format($row['yuzde'], 0) ?>%"></div>
+                                        </div>
+                                        <span class="progress-description">
+                                            %<?= number_format($row['yuzde'], 0) ?>
+                                        </span>
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                </div>
+                                <!-- /.info-box -->
                             </div>
-                        </div>
-
-                        <div class="card card-primary card-outline">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-
-                                <p class="card-text">
-                                    Some quick example text to build on the card title and make up the bulk of the card's
-                                    content.
-                                </p>
-                                <a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>
-                            </div>
-                        </div><!-- /.card -->
+                        <?php endforeach; ?>
                     </div>
-                    <div class="col-lg-4">
-                        <h3>Devam Edenler</h3>
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <!-- The time line -->
+                            <?php foreach ($data['surec'] as $todo) : ?>
+                                <div class="timeline">
+                                    <!-- timeline time label -->
+                                    <div class="time-label">
+                                        <span class="bg-red"><?= date('d/m/Y', strtotime($todo['start_date'])) ?></span>
+                                    </div>
+                                    <!-- /.timeline-label -->
+                                    <!-- timeline item -->
+                                    <div>
+                                        <i class="fa fa-check" style="background-color:<?= $todo['color'] ?> ;"></i>
+                                        <div class="timeline-item">
+                                            <span class="time"><i class="fas fa-clock"></i> <?= date('H:i', strtotime($todo['start_date'])) ?></span>
+                                            <h3 class="timeline-header"><span class="badge bg-success"><?= $todo['category_title'] ?></span> <?= $todo['title'] ?></h3>
 
-                                <p class="card-text">
-                                    Some quick example text to build on the card title and make up the bulk of the card's
-                                    content.
-                                </p>
-
-                                <a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>
-                            </div>
+                                            <div class="timeline-body"><?= $todo['description'] ?></div>
+                                            <div class="progress progress">
+                                                <div class="progress-bar bg-primary" style="width: <?= $todo['progress'] ?>%"><?= $todo['progress'] ?>%</div>
+                                            </div>
+                                            <div class="timeline-footer">
+                                                <a href="<?= url('todo/edit/' . $todo['id']) ?>" class="btn btn-primary btn-sm">Git</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- END timeline item -->
+                                    <div>
+                                        <i class="fas fa-clock bg-gray"></i>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
-
-                        <div class="card card-primary card-outline">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-
-                                <p class="card-text">
-                                    Some quick example text to build on the card title and make up the bulk of the card's
-                                    content.
-                                </p>
-                                <a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>
-                            </div>
-                        </div><!-- /.card -->
+                        <!-- /.col -->
                     </div>
-                    <div class="col-lg-4">
-                        <h3>Tamamlananlar</h3>
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-
-                                <p class="card-text">
-                                    Some quick example text to build on the card title and make up the bulk of the card's
-                                    content.
-                                </p>
-
-                                <a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>
-                            </div>
-                        </div>
-
-                        <div class="card card-primary card-outline">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-
-                                <p class="card-text">
-                                    Some quick example text to build on the card title and make up the bulk of the card's
-                                    content.
-                                </p>
-                                <a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>
-                            </div>
-                        </div><!-- /.card -->
-                    </div>
-                    <!-- /.col-md-6 -->
-                </div>
+                </section>
                 <!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>

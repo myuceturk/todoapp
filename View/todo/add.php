@@ -62,6 +62,7 @@
                                         <select class="form-control" id="status">
                                             <option value="a">Aktif</option>
                                             <option value="p">Pasif</option>
+                                            <option value="s">Süreçte</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
@@ -153,7 +154,7 @@
                 toastr.success(res.data.message)
                 setTimeout(function() {
                     window.location.href = res.data.redirect
-                }, 2000); //will call the function after 2 secs.
+                }, 1000); //will call the function after 2 secs.
             } else {
                 toastr.error(res.data.message)
             }
