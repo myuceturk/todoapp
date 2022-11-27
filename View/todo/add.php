@@ -25,10 +25,13 @@
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-lg-8">
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">ToDo Ekle</h3>
+                                <h3 class="card-title" style="line-height: 30px;">ToDo Ekle</h3>
+                                <div class="card-tools">
+                                    <a href="<?= url('todo/list') ?>" class="btn btn-sm btn-default text-dark"><i class="fa fa-list fa-sm"></i> ToDo Listesi</a>
+                                </div>
                             </div>
                             <!-- /.card-header -->
                             <?php echo  get_session('error') ?
@@ -40,36 +43,47 @@
                                     <div class="form-group">
                                         <label for="title">Kategori Seçiniz:</label>
                                         <select class="form-control" id="category_id"">
-                                            <option> -- Kategori Seçimi Yapınız --</option>
+                                            <option value=" 0"> -- Kategori Seçimi Yapınız --</option>
                                             <?php foreach ($data as $category) : ?>
-                                            <option value=" <?= $category['id'] ?>"><?= $category['title'] ?></option>
-                                        <?php endforeach; ?>
+                                                <option value=" <?= $category['id'] ?>"><?= $category['title'] ?></option>
+                                            <?php endforeach; ?>
                                         </select>
                                     </div>
                                     <div class=" form-group">
                                         <label for="title">Başlık:</label>
-                                        <input type="text" name="title" class="form-control" id="title" placeholder="ToDo Başlığını Giriniz...">
+                                        <input type="text" class="form-control" id="title" placeholder="ToDo Başlığını Giriniz...">
                                     </div>
                                     <div class="form-group">
-                                        <label for="title">Açıklama:</label>
-                                        <input type="text" name="description" class="form-control" id="description" placeholder="ToDo Açıklaması Giriniz...">
+                                        <label for="description">Açıklama:</label>
+                                        <input type="text" class="form-control" id="description" placeholder="ToDo Açıklaması Giriniz...">
                                     </div>
                                     <div class="form-group">
-                                        <label for="title">Renk</label>
-                                        <input type="color" name="color" class="form-control" id="color" value="#007bff">
+                                        <label for="status">Durum</label>
+                                        <select class="form-control" id="status">
+                                            <option value="a">Aktif</option>
+                                            <option value="p">Pasif</option>
+                                        </select>
                                     </div>
                                     <div class="form-group">
-                                        <label for="title">Başlangıç Tarihi:</label>
+                                        <label for="progress">İlerleme</label>
+                                        <input type="range" class="form-control" id="progress" min="0" max="100">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="color">Renk</label>
+                                        <input type="color" class="form-control" id="color" value="#007bff">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="start_date">Başlangıç Tarihi:</label>
                                         <div class="row">
-                                            <input type="date" name="start_date" class="form-control col-8" id="start_date">
-                                            <input type="time" name="start_date_time" class="form-control col-4" id="start_date_time">
+                                            <input type="date" class="form-control col-8" id="start_date">
+                                            <input type="time" class="form-control col-4" id="start_date_time">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="title">Bitiş Tarihi:</label>
+                                        <label for="end_date">Bitiş Tarihi:</label>
                                         <div class="row">
-                                            <input type="date" name="end_date" class="form-control col-8" id="end_date">
-                                            <input type="time" name="end_date_time" class="form-control col-4" id="end_date_time">
+                                            <input type="date" class="form-control col-8" id="end_date">
+                                            <input type="time" class="form-control col-4" id="end_date_time">
                                         </div>
                                     </div>
                                 </div>
@@ -117,6 +131,8 @@
         let end_date = document.getElementById('end_date').value
         let start_date_time = document.getElementById('start_date_time').value
         let end_date_time = document.getElementById('end_date_time').value
+        let status = document.getElementById('status').value
+        let progress = document.getElementById('progress').value
 
         let formData = new FormData();
 
@@ -128,6 +144,8 @@
         formData.append('end_date', end_date)
         formData.append('start_date_time', start_date_time)
         formData.append('end_date_time', end_date_time)
+        formData.append('status', status)
+        formData.append('progress', progress)
 
         axios.post('<?= url('api/addtodo') ?>', formData).then(res => {
 

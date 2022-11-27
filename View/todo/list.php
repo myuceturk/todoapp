@@ -31,9 +31,9 @@
                             : null ?>
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Kategori Listesi</h3>
+                                <h3 class="card-title" style="line-height: 30px;">ToDo Listesi</h3>
                                 <div class="card-tools">
-                                    <a href="<?= url('categories/add') ?>" class="btn btn-sm btn-dark">Ekle</a>
+                                    <a href="<?= url('todo/add') ?>" class="btn btn-sm btn-default text-dark"><i class="fa fa-plus fa-sm"></i> ToDo Ekle</a>
                                 </div>
                             </div>
                             <!-- /.card-header -->
@@ -41,25 +41,33 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th style="width: 10px">#</th>
                                             <th>Başlık</th>
-                                            <th>Oluşturma Tarihi</th>
-                                            <th>Güncelleme Tarihi</th>
+                                            <th>Kategori</th>
+                                            <th>Başlangıç Tarihi</th>
+                                            <th>Bitiş Tarihi</th>
+                                            <th>İlerleme</th>
+                                            <th>Durum</th>
                                             <th style="width: 40px">İşlem</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php $count = 1;
                                         foreach ($data as $key => $value) : ?>
-                                            <tr>
-                                                <td><?= $count++ ?></td>
+                                            <tr id="row_<?= $value['id'] ?>">
                                                 <td><?= $value['title'] ?></td>
-                                                <td><?= $value['created_date'] ?></td>
-                                                <td><?= $value['updated_date'] ?></td>
+                                                <td><?= $value['category_title'] ?></td>
+                                                <td><?= $value['start_date'] ?></td>
+                                                <td><?= $value['end_date'] ?></td>
+                                                <td>
+                                                    <div class="progress progress">
+                                                        <div class="progress-bar bg-primary" style="width: <?= $value['progress'] ?>%"><?= $value['progress'] ?>%</div>
+                                                    </div>
+                                                </td>
+                                                <td><span class="badge bg-<?= $value['status'] == 'a' ? 'success' : 'danger' ?>"><?= $value['status'] == 'a' ? 'Devam Eden' : 'Biten' ?></span></td>
                                                 <td>
                                                     <div class="btn-group btn-group-sm">
-                                                        <a class="btn btn-sm btn-danger mr-2" href="<?= url('categories/remove/' . $value['id']) ?>">Sil</a>
-                                                        <a class="btn btn-sm btn-warning" href="<?= url('categories/edit/' . $value['id']) ?>">Güncelle</a>
+                                                        <button type="button" class="btn btn-sm btn-danger mr-2" onclick="removeTodo('<?= $value['id'] ?>')">Sil</button>
+                                                        <a class="btn btn-sm btn-warning" href="<?= url('todo/edit/' . $value['id']) ?>">Güncelle</a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -92,6 +100,25 @@
 <script src="<?= assets('plugins/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
 <!-- AdminLTE App -->
 <script src="<?= assets('js/adminlte.min.js') ?>"></script>
+<script src="<?= assets('plugins/toastr/toastr.min.js') ?>"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    function removeTodo(id) {
+        let formData = new FormData();
+        formData.append('id', id);
+        axios.post('<?= url('api/removetodo') ?>', formData).then(res => {
+            if (res.data.status == 'success') {
+                if (res.data.id) {
+                    let row = document.getElementById('row_' + res.data.id)
+                    row.remove();
+                }
+                toastr.success(res.data.message)
+            } else {
+                toastr.error(res.data.message)
+            }
+        }).catch(err => console.log(err))
+    }
+</script>
 </body>
 
 </html>
